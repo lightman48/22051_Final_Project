@@ -1,7 +1,15 @@
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
-def design_cheby2_bandstop(fs, fp1, fp2, fs1, fs2, rp, Rs):
+def design_cheby2_bandstop(fs, fp1, fp2, fs1, fs2,Rs):    
+    """
+    fs= sampling frequency
+    fp1,fp2= passband edges (a little outside of stopband edges)
+    fs1,fs2= stopband edges
+    Rs= stopband attenuation
+    returns a vector of noise to be added to sound file
+    for our project: fp1 and fp2 could be 5500 and 8500, fs 6000 and 8000
+    """
     T = 1/fs
     wp1 = fp1*2*np.pi/fs
     wp2 = fp2*2*np.pi/fs
@@ -20,7 +28,7 @@ def design_cheby2_bandstop(fs, fp1, fp2, fs1, fs2, rp, Rs):
     Omega_p = max(Omega_lp_p1, Omega_lp_p2)
     Omega_s = min(Omega_lp_s1, Omega_lp_s2)
 
-    N, Wn = signal.cheb2ord(Omega_p, Omega_s, rp, Rs, analog=True)
+    N, Wn = signal.cheb2ord(Omega_p, Omega_s, 1, Rs, analog=True)
     b,a = signal.cheby2(N,Rs,Wn,btype="low",analog=True)
     b_bs,a_bs = signal.lp2bs(b,a,wo=Omega_0,bw=B)
     bz,az = signal.bilinear(b_bs,a_bs,fs)
