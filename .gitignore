@@ -46,7 +46,6 @@ data/processed/
 
 # Large media output
 *.mp4
-*.wav
 *.mp3
 
 # Editor / IDE
