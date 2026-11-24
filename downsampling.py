@@ -1,18 +1,19 @@
 import numpy as np
 import scipy.signal as signal
 
-def Downsample(x, fs_in, fs_out):
+def AntiAliasingFilter(fs_hi, fs_low, numtaps = 1023): # Numtaps Determined Experimentally
+  # Filter
+  low_nyquist = fs_low / 2
+  fc = 0.9 * low_nyquist
+
+  return signal.firwin(numtaps,fc, fs=fs_hi)
+
+def Downsample(x, fs_in, fs_out) -> np.ndarray:
   assert np.isclose(fs_in / fs_out, int(fs_in / fs_out))
 
-  # Filter
-  out_nyquist = fs_out / 2
-  fc = 0.9 * out_nyquist
-  
-
-  numtaps = 513 # Determined Experimentally
-  
-  bb = signal.firwin(numtaps,fc, fs=fs_in)
-  y = signal.oaconvolve(x, bb)
+  numtaps = 1023
+  filt = AntiAliasingFilter(fs_in, fs_out, numtaps)
+  y = signal.oaconvolve(x, filt)
 
   delay_samples = (numtaps - 1) // 2
   y = y[delay_samples:]

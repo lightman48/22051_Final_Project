@@ -8,7 +8,7 @@ class AutoParameter:
         self.samplerate = samplerate
         self.nodes = nodes
 
-    def process(self):
+    def process(self) -> np.ndarray:
         period = self.nodes[-1][0]
         output = np.zeros(int(self.samplerate * period))
 
