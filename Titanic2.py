@@ -5,7 +5,7 @@ from scipy.signal import hilbert, butter, filtfilt
 
 def name_visual():
     # --- Load audio and convert stereo to mono ---
-    sample_rate, audio = wavfile.read("22051_Final_Project/Titanic_2.wav")
+    sample_rate, audio = wavfile.read("Titanic_2.wav")
     x_untrimmed = np.mean(audio, axis=1)
 
     # --- Trim silence at start and end ---
@@ -43,9 +43,9 @@ def name_visual():
 
     plt.bar(time_centered, sampled_envelope, width=bar_width, color="blue")
     plt.bar(time_centered, -sampled_envelope, width=bar_width, color="blue")
-
     plt.axis("off")
     plt.tight_layout()
+    plt.title("Titanic 2 visualized")
     plt.show()
 
 #name_visual()
