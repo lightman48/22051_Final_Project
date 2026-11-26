@@ -21,7 +21,7 @@ def get_broad_band_noise(x, N=4, Wn1=20, Wn2=22000, fs=44100, perturb=0.0, plot=
     # Stability check
     poles = np.concatenate([np.roots(s[3:]) for s in sos_noise])
     if np.abs(poles).max() >= 1:
-        raise ValueError("Perturbed filter is unstable, lower `perturb`")
+        raise ValueError("Perturbed filter is unstable")
     
     if plot:
         # Plot broad band
@@ -38,10 +38,12 @@ def get_broad_band_noise(x, N=4, Wn1=20, Wn2=22000, fs=44100, perturb=0.0, plot=
         plt.show()
 
         # Plot power spectral density using Welch’s method
-        f, Pxx_den = signal.welch(w0, fs=fs)
-        plt.semilogy(f, Pxx_den)
-        plt.xlabel('frequency')
-        plt.ylabel('PSD')
+        y = signal.sosfiltfilt(sos_noise, x)
+        f, Pxx_x = signal.welch(x, fs=fs, nperseg=4096)
+        f, Pxx_y = signal.welch(y, fs=fs, nperseg=4096)
+        plt.semilogy(f, Pxx_x, label="input")
+        plt.semilogy(f, Pxx_y, label="filtered")
+        plt.legend()
         plt.grid()
         plt.title('PSD using Welch’s method')
         plt.show()
