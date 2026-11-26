@@ -35,4 +35,11 @@ def get_broad_band_noise(x, N=4, Wn1=20, Wn2=22000, fs=44100, perturb=0.0, plot=
         plt.legend()
         plt.show()
 
+        f, Pxx_den = welch(w0, fs=fs)
+        plt.semilogy(f, Pxx_den)
+        plt.xlabel('frequency')
+        plt.ylabel('PSD')
+        plt.grid()
+        plt.show()
+
     return signal.sosfiltfilt(sos_noise, x)
