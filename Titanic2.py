@@ -48,4 +48,4 @@ def name_visual():
     plt.tight_layout()
     plt.show()
 
-name_visual()
+#name_visual()
