@@ -22,8 +22,9 @@ def get_broad_band_noise(x, N=4, Wn1=20, Wn2=22000, fs=44100, perturb=0.0, plot=
     poles = np.concatenate([np.roots(s[3:]) for s in sos_noise])
     if np.abs(poles).max() >= 1:
         raise ValueError("Perturbed filter is unstable, lower `perturb`")
-
+    
     if plot:
+        # Plot broad band
         w0, h0 = signal.sosfreqz(sos, worN=4096, fs=fs)
         w, h = signal.sosfreqz(sos_noise, worN=4096, fs=fs)
         plt.plot(w0, 20 * np.log10(np.maximum(np.abs(h0), 1e-8)), label="original")
@@ -35,6 +36,7 @@ def get_broad_band_noise(x, N=4, Wn1=20, Wn2=22000, fs=44100, perturb=0.0, plot=
         plt.legend()
         plt.show()
 
+        # Plot power spectral density using Welch’s method
         f, Pxx_den = welch(w0, fs=fs)
         plt.semilogy(f, Pxx_den)
         plt.xlabel('frequency')
