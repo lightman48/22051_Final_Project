@@ -1,10 +1,10 @@
 import numpy as np
 import scipy.signal as signal
 
-def AntiAliasingFilter(fs_hi, fs_low, numtaps = 1023): # Numtaps Determined Experimentally
+def AntiAliasingFilter(fs_hi, fs_low, numtaps = 1023, cutoff_ratio=0.95): # Numtaps Determined Experimentally
   # Filter
   low_nyquist = fs_low / 2
-  fc = 0.9 * low_nyquist
+  fc = cutoff_ratio * low_nyquist
 
   return signal.firwin(numtaps,fc, fs=fs_hi)
 
